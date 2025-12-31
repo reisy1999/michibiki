@@ -27,11 +27,6 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: false,
   },
 
-  // 開発サーバー設定（Turbopack）
-  turbopack: {
-    root: __dirname,
-  },
-
   // 本番環境でのソースマップ生成（デバッグ用、必要に応じて無効化可能）
   productionBrowserSourceMaps: false,
 
