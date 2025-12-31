@@ -9,7 +9,8 @@ export default function SignIn() {
     <form
       action={async () => {
         "use server"
-        await signIn("google")
+        //sign-in成功したらhomeへ
+        await signIn("google", { redirectTo: "/home" }) 
       }}
     >
       <Button 
