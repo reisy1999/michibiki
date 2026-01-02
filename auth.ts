@@ -24,15 +24,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // firestoreへの自動ログイン実装
     async signIn({ user }) {
       if(user.id && user.email) {
-        const userRef = doc(db, "users", user.id)
-        const userSnap = await getDoc(userRef)
-        
-        // 初ログインなら登録
-        if(!userSnap.exists()){
-          await setDoc(userRef, {
-            email: user.email,
-            createdAt: new Date().toISOString(),
-          })
+        try {
+          const userRef = doc(db, "users", user.id)
+          const userSnap = await getDoc(userRef)
+
+          // 初ログインなら登録
+          if(!userSnap.exists()){
+            await setDoc(userRef, {
+              email: user.email,
+              createdAt: new Date().toISOString(),
+            })
+          }
+        } catch (error) {
+          console.error("Failed to register user in Firestore:", error)
+          // Firestore失敗でもログインは成功させる
         }
       }
       return true
