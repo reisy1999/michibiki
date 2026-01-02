@@ -3,6 +3,8 @@
 
 import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
+import { doc, setDoc, getDoc } from "firebase/firestore"
+import { db } from "@/lib/firebase"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
@@ -18,6 +20,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       session.user.id = token.id
       return session
     },
+
+    // firestoreへの自動ログイン実装
+    async signIn({ user }) {
+      if(user.id && user.email) {
+        const userRef = doc(db, "users", user.id)
+        const userSnap = await getDoc(userRef)
+        
+        // 初ログインなら登録
+        if(!userSnap.exists()){
+          await setDoc(userRef, {
+            email: user.email,
+            createdAt: new Date().toISOString(),
+          })
+        }
+      }
+      return true
+    },    
   },
-}
-)
+})
