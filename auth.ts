@@ -5,6 +5,7 @@ import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
 import { doc, setDoc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import type { UserDocument } from "@/types/firestore"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
@@ -30,10 +31,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           // 初ログインなら登録
           if(!userSnap.exists()){
-            await setDoc(userRef, {
+            const newUser: UserDocument = {
               email: user.email,
               createdAt: new Date().toISOString(),
-            })
+            }
+            await setDoc(userRef, newUser)
           }
         } catch (error) {
           console.error("Failed to register user in Firestore:", error)
