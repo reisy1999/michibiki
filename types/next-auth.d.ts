@@ -1,16 +1,12 @@
-// User, Session,JWT　それぞれに id プロパティを追加
+// Session と JWT に id プロパティを追加
+// auth.ts で account.providerAccountId を token.id と session.user.id に渡すために必要
 // モジュール拡張（Module Augmentation）が公式推奨
 // 参考: https://authjs.dev/getting-started/typescript#module-augmentation
 
-import NextAuth, { type DefaultUser, type DefaultSession } from "next-auth"
+import { type DefaultSession } from "next-auth"
 import { type JWT } from "next-auth/jwt"
 
 declare module "next-auth" {
-   //DefaultUserでは id?:string
-  interface User extends DefaultUser {
-    id: string
-  }
-
   interface Session {
     user: {
       id: string

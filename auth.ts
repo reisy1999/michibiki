@@ -11,9 +11,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
     //  By default, the `id` property does not exist on `token` or `session`. See the [TypeScript](https://authjs.dev/getting-started/typescript) on how to add it.
   callbacks: {
-    jwt({ token, user }) {
-      if (user) { // User is available during sign-in
-        token.id = user.id
+    jwt({ token, account }) {
+      if (account && account.providerAccountId) {
+        // GoogleのユーザーID（sub）を使用
+        token.id = account.providerAccountId
       }
       return token
     },
@@ -23,10 +24,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     // firestoreへの自動ログイン実装
-    async signIn({ user }) {
-      if(user.id && user.email) {
+    async signIn({ user, account }) {
+      const userId = account?.providerAccountId
+
+      if(userId && user.email) {
         try {
-          const userRef = doc(db, "users", user.id)
+          const userRef = doc(db, "users", userId)
           const userSnap = await getDoc(userRef)
 
           // 初ログインなら登録
