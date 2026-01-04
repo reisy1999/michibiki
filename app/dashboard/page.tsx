@@ -1,5 +1,5 @@
 //ログイン後最初のページ
-import { auth } from "@/auth"
+import { auth } from "@/lib/auth"
 import { SignOut } from "@/app/components/sign-out"
 import { redirect } from "next/navigation"
 
