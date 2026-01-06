@@ -1,7 +1,6 @@
 //Auth.js　https://authjs.dev/getting-started/installation
 //google用のOAuth https://authjs.dev/getting-started/authentication/oauth
 
-import "@/types/auth"
 import NextAuth, { type DefaultSession } from "next-auth"
 import Google from "next-auth/providers/google"
 import { doc, setDoc, getDoc } from "firebase/firestore"
@@ -20,7 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token
     },
     session({ session, token }) {
-      session.user.id = token.id
+      session.user.id = token.id as string
       return session
     },
 
