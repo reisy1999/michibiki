@@ -1,7 +1,8 @@
 //Auth.js　https://authjs.dev/getting-started/installation
 //google用のOAuth https://authjs.dev/getting-started/authentication/oauth
 
-import NextAuth from "next-auth"
+import "@/types/auth"
+import NextAuth, { type DefaultSession } from "next-auth"
 import Google from "next-auth/providers/google"
 import { doc, setDoc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
