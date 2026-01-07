@@ -1,7 +1,7 @@
 import { initializeApp, getApps, cert } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 
-if (!getApps().length) {
+if (getApps().length === 0) { // Check if Firebase app is already initialized
     initializeApp({
       credential: cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
