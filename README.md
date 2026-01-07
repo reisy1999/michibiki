@@ -35,25 +35,25 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-  michibiki/
-  ├── app/
-  │   ├── api/auth/[...nextauth]/route.ts
-  │   ├── home/page.tsx
-  │   ├── layout.tsx
-  │   └── page.tsx
-  ├── components/                    # すべてのコンポーネント
-  │   ├── auth/                      # 認証関連 ✨ NEW
-  │   │   ├── sign-in.tsx
-  │   │   └── sign-out.tsx
-  │   ├── layout/                    # レイアウト
-  │   │   └── sidebar.tsx
-  │   └── ui/                        # UI部品
-  │       ├── button.tsx
-  │       └── card.tsx
-  ├── lib/                           # ロジック・設定
-  │   ├── auth.ts
-  │   ├── firebase.ts
-  │   └── utils.ts
-  └── types/                         # 型定義
-      ├── auth.d.ts                  # NextAuth型拡張
-      └── firestore.ts
+michibiki/
+├── app/
+│ ├── api/auth/[...nextauth]/route.ts
+│ ├── home/page.tsx
+│ ├── layout.tsx
+│ └── page.tsx
+├── components/ # すべてのコンポーネント
+│ ├── auth/ # 認証関連 ✨ NEW
+│ │ ├── sign-in.tsx
+│ │ └── sign-out.tsx
+│ ├── layout/ # レイアウト
+│ │ └── sidebar.tsx
+│ └── ui/ # UI部品
+│ ├── button.tsx
+│ └── card.tsx
+├── lib/ # ロジック・設定
+│ ├── auth.ts
+│ ├── firebase.ts
+│ └── utils.ts
+└── types/ # 型定義
+├── auth.d.ts # NextAuth型拡張
+└── firestore.ts
