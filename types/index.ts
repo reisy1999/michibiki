@@ -11,8 +11,8 @@ export interface Goal {
   title: string;
   description?: string;
   steps: Step[];
-  startDate: Date;        // ✅ 必須
-  targetDate?: Date;      // ✅ 任意（目標達成日）
+  startDate: Date; // ✅ 必須
+  targetDate?: Date; // ✅ 任意（目標達成日）
   createdAt: Date;
   completed: boolean;
 }
@@ -24,7 +24,7 @@ export interface Step {
   order: number;
   tasks: Task[];
   completed: boolean;
-  completedAt?: Date;     // 完了日時のみ
+  completedAt?: Date; // 完了日時のみ
 }
 
 export interface Task {

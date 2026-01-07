@@ -1,18 +1,18 @@
 //ログイン後最初のページ
-import { auth } from "@/lib/auth"
-import { SignOut } from "@/components/auth/sign-out"
-import { redirect } from "next/navigation"
-import { Sidebar} from "@/components/layout/sidebar"
+import { auth } from "@/lib/auth";
+import { SignOut } from "@/components/auth/sign-out";
+import { redirect } from "next/navigation";
+import { Sidebar } from "@/components/layout/sidebar";
 
 export default async function HomePage() {
-  const session = await auth()
-  
+  const session = await auth();
+
   // ログインしてなければトップへ
   if (!session) {
-    redirect('/')
+    redirect("/");
   }
   return (
-    <div className = "flex min-h-screen">
+    <div className="flex min-h-screen">
       <Sidebar />
 
       <div className="flex-1 flex items-center justify-center">
@@ -30,5 +30,5 @@ export default async function HomePage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
