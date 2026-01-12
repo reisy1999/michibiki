@@ -2,7 +2,6 @@
 import { auth } from "@/lib/auth";
 import { SignOut } from "@/components/auth/sign-out";
 import { redirect } from "next/navigation";
-import { Sidebar } from "@/components/layout/sidebar";
 
 export default async function HomePage() {
   const session = await auth();
@@ -13,8 +12,6 @@ export default async function HomePage() {
   }
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
-
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">{session.user?.name}</h1>
