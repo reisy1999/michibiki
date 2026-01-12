@@ -5,19 +5,30 @@ import { Separator } from "@/components/ui/separator"
 import { auth } from "@/lib/auth";
 import { SignOut } from "@/components/auth/sign-out";
 import { redirect } from "next/navigation";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+  InputGroupTextarea,
+} from "@/components/ui/input-group"
 
 export default async function HomePage() {
+  // ログインしてなければトップへ
   const session = await auth();
 
-  // ログインしてなければトップへ
   if (!session) {
     redirect("/");
   }
+
   return (
     <ScrollArea className="flex flex-cal h-screen">
       <div>
         <h1>なにもない！</h1>
       </div>
+      <InputGroup>
+        <InputGroupTextarea placeholder="メッセージを入力してください" />
+      </InputGroup>
     </ScrollArea>
   )
 }
