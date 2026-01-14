@@ -1,17 +1,7 @@
 //ログイン後最初のページ
-import * as React from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
 import { auth } from "@/lib/auth";
-import { SignOut } from "@/components/auth/sign-out";
 import { redirect } from "next/navigation";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-  InputGroupText,
-  InputGroupTextarea,
-} from "@/components/ui/input-group"
 import { InputChat } from "@/components/layout/input-chat"
 
 export default async function HomePage() {
@@ -23,8 +13,19 @@ export default async function HomePage() {
   }
 
   return (
-    <ScrollArea className="flex flex-cal h-screen">
+    <div className="h-screen flex flex-col">
+      {/* チャット履歴スクロール可能エリア*/}
+      <ScrollArea className="flex-1">
+        <div className="flex justify-center">
+          <div className="w-full max-w-3xl p-4">
+          </div>
+        </div>
+      </ScrollArea>
+
+      {/* 入力欄 - 画面下部固定、中央配置 */}
+      <div className="sticky bottom-2 w-full flex justify-center bg-background">
         <InputChat />
-    </ScrollArea>
+      </div>
+    </div>
   )
 }

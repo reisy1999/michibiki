@@ -29,29 +29,30 @@ export function InputChat(){
     }
 
     return (
-        <div className="w-full max-w-3xl">
-            <InputGroup>
-                <TextareaAutosize
-                    data-slot="input-group-control"
-                    className="min-h-16 w-full resize-none rounded-md bg-transparent px-3 py-2.5 text-base transition-[color,box-shadow] outline-none md:text-sm"
-                    placeholder="返信..."
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    maxRows={10}
-                />
-                <InputGroupAddon align="block-end">
-                    <InputGroupButton
-                        variant="default"
-                        className="rounded-full ml-auto"
-                        size="icon-xs"
-                        onClick={handleSend}
-                        disabled={!message.trim()}
-                    >
-                        <ArrowUpIcon />
-                    </InputGroupButton>
-                </InputGroupAddon>
-            </InputGroup>
-        </div>
+        <InputGroup className="w-full max-w-3xl !ring-0 !border-input">
+        {/* どんな状態でもリングエフェクトを0に（CSS !important）*/}
+        {/* どんな状態でもボーダー色をグレーに保つ*/}
+            <TextareaAutosize
+                data-slot="input-group-control"
+                className="flex field-sizing-content min-h-10 w-full resize-none rounded-md bg-transparent px-4 py-3 text-base outline-none md:text-sm"
+                placeholder="返信..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                minRows={1}
+                maxRows={15}
+            />
+            <InputGroupAddon align="block-end">
+                <InputGroupButton
+                    variant="default"
+                    className="rounded-full ml-auto"
+                    size="icon-sm"
+                    onClick={handleSend}
+                    disabled={!message.trim()}
+                >
+                    <ArrowUpIcon />
+                </InputGroupButton>
+            </InputGroupAddon>
+        </InputGroup>
     )
 }
