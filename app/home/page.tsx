@@ -12,6 +12,7 @@ import {
   InputGroupText,
   InputGroupTextarea,
 } from "@/components/ui/input-group"
+import { InputChat } from "@/components/layout/input-chat"
 
 export default async function HomePage() {
   // ログインしてなければトップへ
@@ -23,12 +24,7 @@ export default async function HomePage() {
 
   return (
     <ScrollArea className="flex flex-cal h-screen">
-      <div>
-        <h1>なにもない！</h1>
-      </div>
-      <InputGroup>
-        <InputGroupTextarea placeholder="メッセージを入力してください" />
-      </InputGroup>
+        <InputChat />
     </ScrollArea>
   )
 }
