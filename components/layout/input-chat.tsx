@@ -23,7 +23,7 @@ export function InputChat() {
         <InputGroup>
             <TextareaAutosize
                 data-slot="input-group-control"
-                className="flex field-sizing-content min-h-16 w-full resize-none rounded-md bg-transparent px-3 py-2.5 text-base transition-[color,box-shadow] outline-none md:text-sm"
+                className="min-h-16 w-full resize-none rounded-md bg-transparent px-3 py-2.5 text-base transition-[color,box-shadow] outline-none md:text-sm"
                 placeholder="返信..."
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
