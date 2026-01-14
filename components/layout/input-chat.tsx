@@ -7,6 +7,7 @@ import {
   InputGroupAddon,
   InputGroupButton 
 } from "@/components/ui/input-group"
+import { ArrowUpIcon } from "lucide-react"
 
 export function InputChat() {
     const [message, setMessage] = useState("")
@@ -29,13 +30,13 @@ export function InputChat() {
                 onChange={(e) => setMessage(e.target.value)}
             />
             <InputGroupAddon align="block-end">
-                <InputGroupButton 
-                    className="ml-auto" 
-                    size="sm" 
-                    variant="default"
+                <InputGroupButton
+                    variant="outline"
+                    className="rounded-full"
+                    size="icon-xs"
                     onClick={handleSend}
                 >
-                    送信
+                    <ArrowUpIcon />
                 </InputGroupButton>
             </InputGroupAddon>
         </InputGroup>
