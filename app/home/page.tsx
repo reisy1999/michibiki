@@ -1,8 +1,8 @@
 //ログイン後最初のページ
-import { ScrollArea } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { InputChat } from "@/components/layout/input-chat"
+import { InputChat } from "@/components/layout/input-chat";
 
 export default async function HomePage() {
   // ログインしてなければトップへ
@@ -17,15 +17,14 @@ export default async function HomePage() {
       {/* チャット履歴スクロール可能エリア*/}
       <ScrollArea className="flex-1">
         <div className="flex justify-center">
-          <div className="w-full max-w-3xl p-4">
-          </div>
+          <div className="w-full max-w-3xl p-4"></div>
         </div>
       </ScrollArea>
 
-      {/* 入力欄 - 画面下部固定、中央配置 */}
-      <div className="sticky bottom-2 w-full flex justify-center bg-background">
+      {/* 入力欄: 画面下部固定、中央配置 */}
+      <div className="sticky bottom-10 w-full flex justify-center bg-background">
         <InputChat />
       </div>
     </div>
-  )
+  );
 }
