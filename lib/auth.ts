@@ -35,6 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!userSnap.exists) {
             const newUser: UserDocument = {
               email: user.email,
+              name: user.name ?? "",
               createdAt: new Date().toISOString(),
             };
             await userRef.set(newUser);

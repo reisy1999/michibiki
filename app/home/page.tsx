@@ -1,33 +1,29 @@
 //ログイン後最初のページ
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { auth } from "@/lib/auth";
-import { SignOut } from "@/components/auth/sign-out";
 import { redirect } from "next/navigation";
-import { Sidebar } from "@/components/layout/sidebar";
+import { InputChat } from "@/components/layout/input-chat";
 
 export default async function HomePage() {
+  // ログインしてなければトップへ
   const session = await auth();
 
-  // ログインしてなければトップへ
   if (!session) {
     redirect("/");
   }
-  return (
-    <div className="flex min-h-screen">
-      <Sidebar />
 
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">{session.user?.name}</h1>
-          <h2>
-            <ul>
-              <li>{session.user?.email}</li>
-              <li>{session.user?.image}</li>
-              <li>{session.user?.id}</li>
-              <li>{session.expires}</li>
-            </ul>
-          </h2>
-          <SignOut />
+  return (
+    <div className="h-screen flex flex-col">
+      {/* チャット履歴スクロール可能エリア*/}
+      <ScrollArea className="flex-1">
+        <div className="flex justify-center">
+          <div className="w-full max-w-3xl p-4"></div>
         </div>
+      </ScrollArea>
+
+      {/* 入力欄: 画面下部固定、中央配置 */}
+      <div className="sticky bottom-10 w-full flex justify-center bg-background">
+        <InputChat />
       </div>
     </div>
   );
