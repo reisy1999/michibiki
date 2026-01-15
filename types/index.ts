@@ -35,7 +35,7 @@ export interface Task {
   completedAt?: Date;
 }
 
-export type MessageRole = "user" | "assistant" | "system";
+export type MessageRole = "user" | "model" | "system";
 
 export interface Message {
   id: string; // メッセージの一意な識別子
