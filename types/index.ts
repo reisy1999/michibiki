@@ -1,7 +1,7 @@
 export interface User {
   id: string;
   email: string;
-  displayName: string;
+  name: string;
   createdAt: Date;
 }
 
@@ -33,4 +33,22 @@ export interface Task {
   description?: string;
   completed: boolean;
   completedAt?: Date;
+}
+
+export type MessageRole = "user" | "assistant" | "system";
+
+export interface Message {
+  id: string; // メッセージの一意な識別子
+  role: MessageRole;
+  content: string;
+  createdAt: Date;
+}
+
+export interface Conversation {
+  id: string;
+  userId: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+  messageCount: number; //メッセージはサブコレクションとして別保存
 }
