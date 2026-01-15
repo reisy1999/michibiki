@@ -6,7 +6,7 @@ const MODEL = "gemini-3-flash-preview";
 
 export async function chat(
   contents: Content[],
-  systemInstruction?: string
+  systemInstruction?: string,
 ): Promise<string> {
   const response = await ai.models.generateContent({
     model: MODEL,

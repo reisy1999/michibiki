@@ -1,59 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Michibiki
 
-## Getting Started
+> 週次目標管理 × 感情認識チャットボット × やわらかUI
 
-First, run the development server:
+**Status: 開発中**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 概要
+
+Michibikiは、週次目標の管理をAIチャットボットがサポートするWebアプリケーションです。
+チャットの返信には感情アイコンが表示され、親しみやすいUIで目標達成をサポートします。
+
+## 機能
+
+### チャット機能
+
+- Gemini APIを使用したAIチャット
+- 返信に喜怒哀楽アイコン表示（😊😠😢😤）
+- 会話履歴のFirebase保存
+
+### 目標管理
+
+- 週次目標（最大5個）
+  - タイプA: 達成/未達成
+  - タイプB: 週○回カウント
+- AI助言機能
+- 毎週日曜深夜3:00リセット
+
+### 振り返り
+
+- 日曜日に自動プロンプト
+- 今週の達成度 + 来週の目標設定
+
+### サイドバー
+
+- 過去7日分のチャット履歴
+- アカウント情報
+
+## 技術スタック
+
+| カテゴリ       | 技術                                |
+| -------------- | ----------------------------------- |
+| フレームワーク | Next.js 16 (App Router)             |
+| 言語           | TypeScript                          |
+| UI             | React 19, Tailwind CSS 4, shadcn/ui |
+| 認証           | NextAuth.js v5 (Google OAuth)       |
+| データベース   | Firebase / Firestore                |
+| AI             | Gemini API (@google/genai)          |
+| テスト         | Vitest                              |
+
+## セットアップ
+
+### 必要な環境変数
+
+`.env.local` を作成:
+
+```env
+# Google OAuth (NextAuth)
+AUTH_GOOGLE_ID=
+AUTH_GOOGLE_SECRET=
+AUTH_SECRET=
+
+# Firebase
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+
+# Firebase Admin
+FIREBASE_PROJECT_ID=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_PRIVATE_KEY=
+
+# Gemini
+GEMINI_API_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### インストール
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+http://localhost:3000 でアクセス
 
-## Learn More
+## ディレクトリ構成
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+├── api/          # APIエンドポイント
+├── home/         # ログイン後ページ
+└── page.tsx      # トップページ
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+components/
+├── ui/           # 汎用UIコンポーネント
+├── auth/         # 認証関連
+└── layout/       # レイアウト部品
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+lib/
+├── auth.ts       # NextAuth設定
+├── gemini.ts     # Gemini APIラッパー
+└── firebase*.ts  # Firebase接続
 
-## Deploy on Vercel
+types/
+├── index.ts      # ドメイン型
+└── firestore.ts  # DB保存用型
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+詳細は [docs/architecture.md](docs/architecture.md) を参照
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 開発コマンド
 
-michibiki/
-├── app/
-│ ├── api/auth/[...nextauth]/route.ts
-│ ├── home/page.tsx
-│ ├── layout.tsx
-│ └── page.tsx
-├── components/ # すべてのコンポーネント
-│ ├── auth/ # 認証関連 ✨ NEW
-│ │ ├── sign-in.tsx
-│ │ └── sign-out.tsx
-│ ├── layout/ # レイアウト
-│ │ └── sidebar.tsx
-│ └── ui/ # UI部品
-│ ├── button.tsx
-│ └── card.tsx
-├── lib/ # ロジック・設定
-│ ├── auth.ts
-│ ├── firebase.ts
-│ └── utils.ts
-└── types/ # 型定義
-├── auth.d.ts # NextAuth型拡張
-└── firestore.ts
+```bash
+npm run dev       # 開発サーバー起動
+npm run build     # 本番ビルド
+npm run lint      # Lint実行
+npm run test      # テスト実行
+npm run test:ui   # テストUI起動
+```
+
+## ライセンス
+
+Private
