@@ -1,5 +1,3 @@
-// 会話の中身（実際のチャットメッセージ）を扱います。
-
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { adminDb } from "@/lib/firebase-admin";
@@ -29,7 +27,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const userId = session.user.id;
 
-    // 会話の存在確認
     const conversationRef = adminDb
       .collection("users")
       .doc(userId)
@@ -44,18 +41,15 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    // TODO: メッセージ一覧を取得する処理を実装してください
-    // ヒント:
-    // 1. conversationRef.collection("messages") でメッセージコレクション参照
-    // 2. .orderBy("createdAt", "asc") で作成日時の昇順にソート（古い順）
-    // 3. .get() でクエリを実行
-    // 4. snapshot.docs.map() で { id: doc.id, ...doc.data() } 形式に変換
+    const messagesSnap = await conversationRef
+      .collection("messages")
+      .orderBy("createdAt", "asc")
+      .get();
 
-    // ↓↓↓ ここに実装 ↓↓↓
-    const messages: (MessageDocument & { id: string })[] = [];
-
-    
-    // ↑↑↑ ここに実装 ↑↑↑
+    const messages = messagesSnap.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as MessageDocument),
+    }));
 
     return NextResponse.json({ messages });
   } catch (error) {
@@ -82,26 +76,23 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const userId = session.user.id;
     const body: MessageRequest = await request.json();
 
-    // TODO: リクエストボディのバリデーションを実装してください
-    // ヒント:
-    // 1. role が "user" | "model" | "system" のいずれかであることを確認
-    // 2. content が空文字列でないことを確認
-    // 3. バリデーションエラーの場合は400エラーを返す
-
-    // ↓↓↓ ここに実装 ↓↓↓
     const { role, content } = body;
     const validRoles: MessageRole[] = ["user", "model", "system"];
 
     if (!validRoles.includes(role)) {
-      // 400エラーを返す処理を実装
+      return NextResponse.json(
+        { error: "Invalid role. Must be 'user', 'model', or 'system'" },
+        { status: 400 }
+      );
     }
 
-    if (!content || typeof content !== "string") {
-      // 400エラーを返す処理を実装
+    if (!content || typeof content !== "string" || content.trim().length === 0) {
+      return NextResponse.json(
+        { error: "Content is required and cannot be empty" },
+        { status: 400 }
+      );
     }
-    // ↑↑↑ ここに実装 ↑↑↑
 
-    // 会話の存在確認
     const conversationRef = adminDb
       .collection("users")
       .doc(userId)
@@ -118,37 +109,27 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     const now = new Date().toISOString();
 
-    // 新規メッセージドキュメント
     const newMessage: MessageDocument = {
       role,
       content,
       createdAt: now,
     };
 
-    // TODO: トランザクションを使ってメッセージ追加と会話更新を実装してください
-    // ヒント:
-    // トランザクションを使う理由：メッセージ追加とmessageCountの更新を原子的に行うため
-    // 1. adminDb.runTransaction(async (transaction) => { ... })
-    // 2. transaction.get(conversationRef) で現在の会話データを取得
-    // 3. messagesRef = conversationRef.collection("messages").doc() で新規ドキュメント参照
-    // 4. transaction.set(messagesRef, newMessage) でメッセージを追加
-    // 5. transaction.update(conversationRef, { updatedAt: now, messageCount: 現在のカウント + 1 })
-    // 6. トランザクション内でmessagesRef.idを返す
+    const messageId = await adminDb.runTransaction(async (transaction) => {
+      const convSnap = await transaction.get(conversationRef);
+      const convData = convSnap.data() as ConversationDocument;
 
-    // ↓↓↓ ここに実装 ↓↓↓
-    // 簡易版：トランザクションなしで実装
-    const messagesRef = conversationRef.collection("messages");
-    const docRef = await messagesRef.add(newMessage);
+      const messageRef = conversationRef.collection("messages").doc();
 
-    // 会話のupdatedAtとmessageCountを更新（本来はトランザクション内で行う）
-    const conversationData = conversationSnap.data() as ConversationDocument;
-    await conversationRef.update({
-      updatedAt: now,
-      messageCount: (conversationData.messageCount || 0) + 1,
+      transaction.set(messageRef, newMessage);
+
+      transaction.update(conversationRef, {
+        updatedAt: now,
+        messageCount: (convData.messageCount || 0) + 1,
+      });
+
+      return messageRef.id;
     });
-
-    const messageId = docRef.id;
-    // ↑↑↑ ここに実装 ↑↑↑
 
     return NextResponse.json(
       {
