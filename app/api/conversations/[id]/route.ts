@@ -1,3 +1,5 @@
+// 会話そのもの（title, createdAt, updatedAt, messageCount等のメタデータ）を扱う
+
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { adminDb } from "@/lib/firebase-admin";

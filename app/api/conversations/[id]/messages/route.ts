@@ -1,3 +1,5 @@
+// 会話の中身（実際のチャットメッセージ）を扱います。
+
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { adminDb } from "@/lib/firebase-admin";
@@ -51,6 +53,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     // ↓↓↓ ここに実装 ↓↓↓
     const messages: (MessageDocument & { id: string })[] = [];
+
+    
     // ↑↑↑ ここに実装 ↑↑↑
 
     return NextResponse.json({ messages });

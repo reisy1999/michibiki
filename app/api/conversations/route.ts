@@ -1,3 +1,5 @@
+//  会話リソース全体を扱うエンドポイント。「どの会話があるか」を管理
+
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { adminDb } from "@/lib/firebase-admin";

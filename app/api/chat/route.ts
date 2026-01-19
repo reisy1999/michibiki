@@ -10,7 +10,7 @@ interface ChatRequest {
 
 export async function POST(request: NextRequest) {
   try {
-    // 認証チェック
+    // firebase auth未認証なら401を返す
     const session = await auth();
     if (!session?.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
