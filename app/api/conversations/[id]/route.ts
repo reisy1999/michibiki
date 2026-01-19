@@ -21,15 +21,6 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const userId = session.user.id;
 
-    // TODO: Firestoreから特定の会話を取得する処理を実装してください
-    // ヒント:
-    // 1. adminDb.collection("users").doc(userId).collection("conversations").doc(id) でドキュメント参照
-    // 2. .get() でドキュメントを取得
-    // 3. docSnap.exists でドキュメントの存在確認
-    // 4. 存在しない場合は404エラーを返す
-    // 5. docSnap.data() でデータを取得
-
-    // ↓↓↓ ここに実装 ↓↓↓
     const conversationRef = adminDb
       .collection("users")
       .doc(userId)
@@ -38,11 +29,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     const docSnap = await conversationRef.get();
 
-    // 存在チェックを実装してください
-    // if (!docSnap.exists) { ... }
+    if (!docSnap.exists) {
+      return NextResponse.json(
+        { error: "Conversation not found" }, 
+        { status: 404 }
+      );
+    } 
 
     const conversation = docSnap.data() as ConversationDocument | undefined;
-    // ↑↑↑ ここに実装 ↑↑↑
 
     return NextResponse.json({
       id: docSnap.id,
@@ -77,27 +71,26 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       .collection("conversations")
       .doc(id);
 
-    // TODO: 会話の存在確認を実装してください
-    // ヒント:
-    // 1. conversationRef.get() でドキュメントを取得
-    // 2. 存在しない場合は404エラーを返す
+    const docSnap = await conversationRef.get();
 
-    // ↓↓↓ ここに実装 ↓↓↓
+    if (!docSnap.exists) {
+      return NextResponse.json(
+        { error: "Conversation not found" }, 
+        { status: 404 }
+      );
+    }
 
-    // ↑↑↑ ここに実装 ↑↑↑
+    const messagesSnap = await conversationRef.collection("messages").get();
 
-    // TODO: サブコレクション（messages）を削除する処理を実装してください
-    // ヒント:
-    // Firestoreではサブコレクションは親ドキュメント削除時に自動削除されない
-    // 1. conversationRef.collection("messages").get() でメッセージ一覧を取得
-    // 2. batch = adminDb.batch() でバッチ処理を開始
-    // 3. messagesSnap.docs.forEach(doc => batch.delete(doc.ref)) で各メッセージを削除対象に
-    // 4. batch.delete(conversationRef) で会話自体も削除対象に
-    // 5. await batch.commit() でバッチ処理を実行
+    const batch = adminDb.batch();
 
-    // ↓↓↓ ここに実装 ↓↓↓
-    await conversationRef.delete(); // 簡易版：メッセージ削除は未実装
-    // ↑↑↑ ここに実装 ↑↑↑
+    messagesSnap.docs.forEach(doc => {
+      batch.delete(doc.ref);
+    });
+
+    batch.delete(conversationRef);
+
+    await batch.commit();
 
     return NextResponse.json({ success: true });
   } catch (error) {
